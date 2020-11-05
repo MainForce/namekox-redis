@@ -160,7 +160,7 @@ logger = getLogger(__name__)
 
 
 class Phone(object):
-    name = 'ping'
+    name = 'phone'
 
     redis = RedisDB('redisdb')
 
