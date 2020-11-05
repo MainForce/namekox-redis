@@ -1,0 +1,44 @@
+#! -*- coding: utf-8 -*-
+
+# author: forcemain@163.com
+
+
+from redis import StrictRedis
+from namekox_core.core.friendly import AsLazyProperty
+from namekox_redis.constants import REDISDB_CONFIG_KEY
+
+
+from .sentinel import Sentinel
+
+
+class RedisDBProxy(object):
+    def __init__(self, config, **options):
+        self.config = config
+        self.options = options
+        self.connection = None
+
+    @AsLazyProperty
+    def uris(self):
+        return self.config.get(REDISDB_CONFIG_KEY, {})
+
+    def __call__(self, dbname, **options):
+        self.options.update(**options)
+        duri = self.uris[dbname]
+        self.connection = StrictRedis.from_url(duri, **self.options)
+        return self.connection
+
+
+class SentinelDBProxy(object):
+    def __init__(self, config, **options):
+        self.config = config
+        self.options = options
+        self.sentinel = None
+
+    @AsLazyProperty
+    def uris(self):
+        return self.config.get(REDISDB_CONFIG_KEY, {})
+
+    def __call__(self, dbname, **options):
+        self.options.update(options)
+        uris = self.uris[dbname]
+        self.sentinel = Sentinel(uris, **self.options)
