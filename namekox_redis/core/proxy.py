@@ -4,8 +4,8 @@
 
 
 from redis import StrictRedis
+from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
-from namekox_redis.constants import REDISDB_CONFIG_KEY
 
 
 from .sentinel import Sentinel
@@ -19,7 +19,7 @@ class RedisDBProxy(object):
 
     @AsLazyProperty
     def uris(self):
-        return self.config.get(REDISDB_CONFIG_KEY, {})
+        return self.config.get(REDIS_CONFIG_KEY, {})
 
     def __call__(self, dbname, **options):
         self.options.update(**options)
@@ -36,7 +36,7 @@ class SentinelDBProxy(object):
 
     @AsLazyProperty
     def uris(self):
-        return self.config.get(REDISDB_CONFIG_KEY, {})
+        return self.config.get(REDIS_CONFIG_KEY, {})
 
     def __call__(self, dbname, **options):
         self.options.update(options)

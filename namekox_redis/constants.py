@@ -3,4 +3,4 @@
 # author: forcemain@163.com
 
 
-REDISDB_CONFIG_KEY = 'REDISDB'
+REDIS_CONFIG_KEY = 'REDIS'

@@ -4,8 +4,8 @@
 
 
 from namekox_redis.core.sentinel import Sentinel
+from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
-from namekox_redis.constants import REDISDB_CONFIG_KEY
 from namekox_core.core.service.dependency import Dependency
 
 
@@ -18,7 +18,7 @@ class SentinelDB(Dependency):
 
     @AsLazyProperty
     def uris(self):
-        return self.container.config.get(REDISDB_CONFIG_KEY, {})
+        return self.container.config.get(REDIS_CONFIG_KEY, {})
 
     def setup(self):
         uris = self.uris[self.dbname]

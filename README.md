@@ -70,7 +70,7 @@ class Ping(object):
 # Running
 > config.yaml
 ```yaml
-REDISDB:
+REDIS:
   sentinel:
     - redis://:***@*.*.*.*:6379/0
     - redis://:***@*.*.*.*:6379/0
@@ -269,7 +269,7 @@ class Phone(object):
 CONTEXT:
   - namekox_redis.cli.subctx.redisdb:RedisDB
   - namekox_redis.cli.subctx.sentinel:SentinelDB
-REDISDB:
+REDIS:
   sentinel:
     - redis://:***@*.*.*.*:6379/0
     - redis://:***@*.*.*.*:6379/0

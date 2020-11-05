@@ -8,8 +8,8 @@ import time
 
 from redis import StrictRedis
 from logging import getLogger
+from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
-from namekox_redis.constants import REDISDB_CONFIG_KEY
 from namekox_core.core.service.entrypoint import Entrypoint
 
 
@@ -28,7 +28,7 @@ class RedisSubHandler(Entrypoint):
 
     @AsLazyProperty
     def uris(self):
-        return self.container.config.get(REDISDB_CONFIG_KEY, {})
+        return self.container.config.get(REDIS_CONFIG_KEY, {})
 
     def setup(self):
         duri = self.uris[self.dbname]

@@ -4,8 +4,8 @@
 
 
 from redis import StrictRedis
+from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
-from namekox_redis.constants import REDISDB_CONFIG_KEY
 from namekox_core.core.service.dependency import Dependency
 
 
@@ -18,7 +18,7 @@ class RedisDB(Dependency):
 
     @AsLazyProperty
     def uris(self):
-        return self.container.config.get(REDISDB_CONFIG_KEY, {})
+        return self.container.config.get(REDIS_CONFIG_KEY, {})
 
     def setup(self):
         duri = self.uris[self.dbname]
