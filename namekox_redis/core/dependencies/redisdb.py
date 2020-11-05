@@ -3,10 +3,12 @@
 # author: forcemain@163.com
 
 
-from redis import StrictRedis
 from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
 from namekox_core.core.service.dependency import Dependency
+
+
+from .client import RedisClient
 
 
 class RedisDB(Dependency):
@@ -22,7 +24,7 @@ class RedisDB(Dependency):
 
     def setup(self):
         duri = self.uris[self.dbname]
-        self.connection = StrictRedis.from_url(duri, *self.options)
+        self.connection = RedisClient.from_url(duri, *self.options)
 
     def get_instance(self, context):
         return self.connection

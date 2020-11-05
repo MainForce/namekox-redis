@@ -11,6 +11,7 @@ from logging import getLogger
 from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
 from namekox_core.core.service.entrypoint import Entrypoint
+from namekox_redis.core.messaging import get_message_headers
 
 
 logger = getLogger(__name__)
@@ -44,10 +45,10 @@ class RedisSubHandler(Entrypoint):
         p = self.connection.pubsub(ignore_subscribe_messages=True)
         s = p.psubscribe if self.pattern_mode is True else p.subscribe
         s(*self.channels)
-        # TODO: extract context data from channel message
-        ctx_data = None
         for m in p.listen():
-            args, kwargs = (m,), {}
+            d = m['data']
+            args, kwargs = (d,), {}
+            ctx_data = get_message_headers(m)
             self.container.spawn_worker_thread(self, args, kwargs, ctx_data=ctx_data)
             time.sleep(0.001)
         u = p.punsubscribe if self.pattern_mode is True else p.unsubscribe

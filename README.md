@@ -12,7 +12,6 @@ pip install -U namekox-redis
 
 import time
 import random
-import anyjson
 
 
 from marshmallow import Schema, fields
@@ -60,7 +59,7 @@ class Ping(object):
             int(time.time() * 1000): random.choice([0, 1])
         }
         # write to channel
-        self.redis.publish('ping', anyjson.serialize({name: mapping}))
+        self.redis.publish('ping', {name: mapping})
         # write to redisdb
         pipe = self.redis.pipeline()
         pipe.zadd(name, mapping)
@@ -78,64 +77,65 @@ REDIS:
 ```
 > namekox run ping
 ```shell script
-2020-11-05 09:42:04,335 DEBUG load container class from namekox_core.core.service.container:ServiceContainer
-2020-11-05 09:42:04,336 DEBUG starting services ['ping']
-2020-11-05 09:42:04,336 DEBUG starting service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res]
-2020-11-05 09:42:04,337 DEBUG spawn manage thread handle ping:namekox_redis.core.entrypoints.sub.handler:_run(args=(), kwargs={}, tid=_run)
-2020-11-05 09:42:04,337 DEBUG spawn manage thread handle ping:namekox_timer.core.entrypoints.timer:_run(args=(), kwargs={}, tid=_run)
-2020-11-05 09:42:04,340 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_connect(args=(), kwargs={}, tid=handle_connect)
-2020-11-05 09:42:04,341 DEBUG service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] started
-2020-11-05 09:42:04,341 DEBUG starting service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
-2020-11-05 09:42:04,342 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] started
-2020-11-05 09:42:04,343 DEBUG services ['ping'] started
-2020-11-05 09:42:09,344 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 09:42:09,353 DEBUG spawn worker thread handle ping:rds_sub(args=({u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:159.218.96.180:result": {"1604540529345": 1}}'},), kwargs={}, context=None)
-('recv ping channel data: ', {u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:159.218.96.180:result": {"1604540529345": 1}}'})
-2020-11-05 09:42:14,344 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 09:42:14,350 DEBUG spawn worker thread handle ping:rds_sub(args=({u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:76.230.7.197:result": {"1604540534344": 0}}'},), kwargs={}, context=None)
-('recv ping channel data: ', {u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:76.230.7.197:result": {"1604540534344": 0}}'})
-2020-11-05 09:42:19,343 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 09:42:19,348 DEBUG spawn worker thread handle ping:rds_sub(args=({u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:172.254.248.64:result": {"1604540539344": 0}}'},), kwargs={}, context=None)
-('recv ping channel data: ', {u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:172.254.248.64:result": {"1604540539344": 0}}'})
-2020-11-05 09:42:24,345 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 09:42:24,350 DEBUG spawn worker thread handle ping:rds_sub(args=({u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:243.161.154.40:result": {"1604540544345": 0}}'},), kwargs={}, context=None)
-('recv ping channel data: ', {u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:243.161.154.40:result": {"1604540544345": 0}}'})
-2020-11-05 09:42:29,345 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 09:42:29,350 DEBUG spawn worker thread handle ping:rds_sub(args=({u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:193.11.202.108:result": {"1604540549346": 1}}'},), kwargs={}, context=None)
-('recv ping channel data: ', {u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:193.11.202.108:result": {"1604540549346": 1}}'})
-2020-11-05 09:42:34,343 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 09:42:34,356 DEBUG spawn worker thread handle ping:rds_sub(args=({u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:254.104.167.77:result": {"1604540554344": 0}}'},), kwargs={}, context=None)
-('recv ping channel data: ', {u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:254.104.167.77:result": {"1604540554344": 0}}'})
-2020-11-05 09:42:36,504 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_request(args=(<eventlet.greenio.base.GreenSocket object at 0x10c1f9f10>, ('127.0.0.1', 53353)), kwargs={}, tid=handle_request)
-2020-11-05 09:42:36,516 DEBUG spawn worker thread handle ping:ping_res(args=(<Request 'http://127.0.0.1/api/ping/159.218.96.180/' [GET]>,), kwargs={'ip': u'159.218.96.180'}, context={})
-127.0.0.1 - - [05/Nov/2020 09:42:36] "GET /api/ping/159.218.96.180/ HTTP/1.1" 200 302 0.010059
-2020-11-05 09:42:39,345 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 09:42:39,349 DEBUG spawn worker thread handle ping:rds_sub(args=({u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:52.232.227.243:result": {"1604540559346": 0}}'},), kwargs={}, context=None)
-('recv ping channel data: ', {u'pattern': None, u'type': 'message', u'channel': 'ping', u'data': '{"ping:52.232.227.243:result": {"1604540559346": 0}}'})
-^C2020-11-05 09:42:42,908 DEBUG stopping services ['ping']
-2020-11-05 09:42:42,909 DEBUG stopping service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res]
-2020-11-05 09:42:42,912 DEBUG wait service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] stop
-2020-11-05 09:42:42,913 DEBUG service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] stopped
-2020-11-05 09:42:42,913 DEBUG stopping service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
-2020-11-05 09:42:42,918 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] stopped
-2020-11-05 09:42:42,919 DEBUG services ['ping'] stopped
-2020-11-05 09:42:42,919 DEBUG killing services ['ping']
-2020-11-05 09:42:42,920 DEBUG service ping already stopped
-2020-11-05 09:42:42,920 DEBUG services ['ping'] killed
+2020-11-05 17:20:29,046 DEBUG load container class from namekox_core.core.service.container:ServiceContainer
+2020-11-05 17:20:29,047 DEBUG starting services ['ping']
+2020-11-05 17:20:29,047 DEBUG starting service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res]
+2020-11-05 17:20:29,048 DEBUG spawn manage thread handle ping:namekox_timer.core.entrypoints.timer:_run(args=(), kwargs={}, tid=_run)
+2020-11-05 17:20:29,048 DEBUG spawn manage thread handle ping:namekox_redis.core.entrypoints.sub.handler:_run(args=(), kwargs={}, tid=_run)
+2020-11-05 17:20:29,051 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_connect(args=(), kwargs={}, tid=handle_connect)
+2020-11-05 17:20:29,052 DEBUG service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] started
+2020-11-05 17:20:29,052 DEBUG starting service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
+2020-11-05 17:20:29,055 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] started
+2020-11-05 17:20:29,056 DEBUG services ['ping'] started
+2020-11-05 17:20:34,054 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 17:20:34,065 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:248.5.143.151:result": {"1604568034054": 0}}}',), kwargs={}, context={})
+('recv ping channel data: ', '{"headers": {}, "message": {"ping:248.5.143.151:result": {"1604568034054": 0}}}')
+2020-11-05 17:20:39,056 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 17:20:39,063 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:1.45.148.128:result": {"1604568039057": 0}}}',), kwargs={}, context={})
+('recv ping channel data: ', '{"headers": {}, "message": {"ping:1.45.148.128:result": {"1604568039057": 0}}}')
+2020-11-05 17:20:44,055 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 17:20:44,061 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:238.118.45.63:result": {"1604568044055": 0}}}',), kwargs={}, context={})
+('recv ping channel data: ', '{"headers": {}, "message": {"ping:238.118.45.63:result": {"1604568044055": 0}}}')
+2020-11-05 17:20:49,056 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 17:20:49,059 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:103.141.211.213:result": {"1604568049056": 1}}}',), kwargs={}, context={})
+('recv ping channel data: ', '{"headers": {}, "message": {"ping:103.141.211.213:result": {"1604568049056": 1}}}')
+2020-11-05 17:20:52,911 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_request(args=(<eventlet.greenio.base.GreenSocket object at 0x111334f50>, ('127.0.0.1', 50627)), kwargs={}, tid=handle_request)
+2020-11-05 17:20:54,057 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 17:20:54,060 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:132.41.210.189:result": {"1604568054057": 1}}}',), kwargs={}, context={})
+('recv ping channel data: ', '{"headers": {}, "message": {"ping:132.41.210.189:result": {"1604568054057": 1}}}')
+2020-11-05 17:20:59,056 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 17:20:59,060 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:184.173.13.42:result": {"1604568059056": 0}}}',), kwargs={}, context={})
+('recv ping channel data: ', '{"headers": {}, "message": {"ping:184.173.13.42:result": {"1604568059056": 0}}}')
+2020-11-05 17:21:00,897 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_request(args=(<eventlet.greenio.base.GreenSocket object at 0x111334d50>, ('127.0.0.1', 50649)), kwargs={}, tid=handle_request)
+2020-11-05 17:21:00,969 DEBUG spawn worker thread handle ping:ping_res(args=(<Request 'http://127.0.0.1/api/ping/248.5.143.151/' [GET]>,), kwargs={'ip': u'248.5.143.151'}, context={})
+127.0.0.1 - - [05/Nov/2020 17:21:00] "GET /api/ping/248.5.143.151/ HTTP/1.1" 200 302 0.014956
+2020-11-05 17:21:04,051 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 17:21:04,054 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:250.191.226.59:result": {"1604568064052": 0}}}',), kwargs={}, context={})
+('recv ping channel data: ', '{"headers": {}, "message": {"ping:250.191.226.59:result": {"1604568064052": 0}}}')
+^C2020-11-05 17:21:08,036 DEBUG stopping services ['ping']
+2020-11-05 17:21:08,036 DEBUG stopping service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res]
+2020-11-05 17:21:08,038 DEBUG wait service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] stop
+2020-11-05 17:21:08,039 DEBUG service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] stopped
+2020-11-05 17:21:08,039 DEBUG stopping service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
+2020-11-05 17:21:08,041 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] stopped
+2020-11-05 17:21:08,044 DEBUG services ['ping'] stopped
+2020-11-05 17:21:08,045 DEBUG killing services ['ping']
+2020-11-05 17:21:08,046 DEBUG service ping already stopped
+2020-11-05 17:21:08,047 DEBUG services ['ping'] killed
 ```
-> curl http://127.0.0.1/api/ping/159.218.96.180/
+> curl http://127.0.0.1/api/ping/248.5.143.151/
 ```json
 {
     "errs": "",
     "code": "Request:Success",
     "data": [
         {
-          "ip": "159.218.96.180",
-          "alive": true,
-          "created": 1604540529345
+          "ip": "248.5.143.151",
+          "alive": false,
+          "created": 1604568034054
         }
     ],
-    "call_id": "24d9bea6-862e-403c-8078-63e2ea1a9258"
+    "call_id": "bb3a562d-44ed-4b7f-ad77-7978403fd4b9"
 }
 ```
 
@@ -175,92 +175,92 @@ class Phone(object):
 ```
 > namekox run ping
 ```shell script
-2020-11-05 11:28:05,309 DEBUG load container class from namekox_core.core.service.container:ServiceContainer
-2020-11-05 11:28:05,309 DEBUG starting services ['ping']
-2020-11-05 11:28:05,310 DEBUG starting service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number]
-2020-11-05 11:28:05,310 DEBUG spawn manage thread handle ping:namekox_timer.core.entrypoints.timer:_run(args=(), kwargs={}, tid=_run)
-2020-11-05 11:28:05,311 DEBUG service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number] started
-2020-11-05 11:28:05,311 DEBUG starting service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
-2020-11-05 11:28:05,311 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] started
-2020-11-05 11:28:05,311 DEBUG services ['ping'] started
-2020-11-05 11:28:05,412 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:05,431 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:06,437 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:06,437 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:06,441 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:10,452 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:10,452 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:10,456 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:15,460 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:15,461 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:15,464 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:16,471 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:16,472 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:16,474 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:17,480 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:17,480 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:17,483 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:20,488 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:20,488 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:20,492 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:21,499 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:21,500 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:21,504 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:23,510 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:23,510 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:23,513 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:24,522 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:24,522 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:29,507 DEBUG number_assign waiting `phone:assign_number:lock` lock released
-^C2020-11-05 11:28:31,894 DEBUG stopping services ['ping']
-2020-11-05 11:28:31,895 DEBUG stopping service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number]
-2020-11-05 11:28:34,421 DEBUG number_assign waiting `phone:assign_number:lock` lock released
-2020-11-05 11:28:35,601 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:40,609 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:40,610 DEBUG wait service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number] stop
-2020-11-05 11:28:40,610 DEBUG service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number] stopped
-2020-11-05 11:28:40,610 DEBUG stopping service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
-2020-11-05 11:28:40,611 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] stopped
-2020-11-05 11:28:40,611 DEBUG services ['ping'] stopped
-2020-11-05 11:28:40,612 DEBUG killing services ['ping']
-2020-11-05 11:28:40,612 DEBUG service ping already stopped
-2020-11-05 11:28:40,612 DEBUG services ['ping'] killed
+2020-11-05 17:23:46,480 DEBUG load container class from namekox_core.core.service.container:ServiceContainer
+2020-11-05 17:23:46,481 DEBUG starting services ['phone']
+2020-11-05 17:23:46,481 DEBUG starting service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number]
+2020-11-05 17:23:46,481 DEBUG spawn manage thread handle phone:namekox_timer.core.entrypoints.timer:_run(args=(), kwargs={}, tid=_run)
+2020-11-05 17:23:46,482 DEBUG service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number] started
+2020-11-05 17:23:46,482 DEBUG starting service phone dependencies [phone:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
+2020-11-05 17:23:46,483 DEBUG service phone dependencies [phone:namekox_redis.core.dependencies.redisdb.RedisDB:redis] started
+2020-11-05 17:23:46,483 DEBUG services ['phone'] started
+2020-11-05 17:23:46,584 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:23:46,613 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:23:50,629 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:23:50,629 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:23:50,634 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:23:51,641 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:23:51,642 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:23:51,646 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:23:54,651 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:23:54,651 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:23:54,655 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:23:59,659 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:23:59,660 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:23:59,662 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:03,670 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:03,670 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:03,673 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:07,683 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:07,684 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:07,688 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:12,694 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:12,695 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:12,697 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:15,705 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:15,705 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:15,708 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+^C2020-11-05 17:24:18,082 DEBUG stopping services ['phone']
+2020-11-05 17:24:18,083 DEBUG stopping service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number]
+2020-11-05 17:24:20,716 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:20,716 DEBUG wait service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number] stop
+2020-11-05 17:24:20,716 DEBUG service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number] stopped
+2020-11-05 17:24:20,717 DEBUG stopping service phone dependencies [phone:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
+2020-11-05 17:24:20,717 DEBUG service phone dependencies [phone:namekox_redis.core.dependencies.redisdb.RedisDB:redis] stopped
+2020-11-05 17:24:20,718 DEBUG services ['phone'] stopped
+2020-11-05 17:24:20,718 DEBUG killing services ['phone']
+2020-11-05 17:24:20,719 DEBUG service phone already stopped
+2020-11-05 17:24:20,719 DEBUG services ['phone'] killed
 ```
 > namekox run ping
 ```shell script
-2020-11-05 11:28:09,387 DEBUG load container class from namekox_core.core.service.container:ServiceContainer
-2020-11-05 11:28:09,387 DEBUG starting services ['ping']
-2020-11-05 11:28:09,388 DEBUG starting service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number]
-2020-11-05 11:28:09,388 DEBUG spawn manage thread handle ping:namekox_timer.core.entrypoints.timer:_run(args=(), kwargs={}, tid=_run)
-2020-11-05 11:28:09,388 DEBUG service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number] started
-2020-11-05 11:28:09,388 DEBUG starting service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
-2020-11-05 11:28:09,389 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] started
-2020-11-05 11:28:09,389 DEBUG services ['ping'] started
-2020-11-05 11:28:09,492 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:14,425 DEBUG number_assign waiting `phone:assign_number:lock` lock released
-2020-11-05 11:28:19,421 DEBUG number_assign waiting `phone:assign_number:lock` lock released
-2020-11-05 11:28:24,415 DEBUG number_assign waiting `phone:assign_number:lock` lock released
-2020-11-05 11:28:24,525 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:28,533 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:28,533 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:28,538 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:29,546 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:29,547 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:29,550 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:32,560 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:32,561 DEBUG spawn worker thread handle ping:assign_number(args=(), kwargs={}, context=None)
-2020-11-05 11:28:32,563 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-^C2020-11-05 11:28:34,493 DEBUG stopping services ['ping']
-2020-11-05 11:28:34,494 DEBUG stopping service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number]
-2020-11-05 11:28:35,572 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
-2020-11-05 11:28:35,572 DEBUG wait service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number] stop
-2020-11-05 11:28:35,572 DEBUG service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:assign_number] stopped
-2020-11-05 11:28:35,572 DEBUG stopping service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
-2020-11-05 11:28:35,573 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] stopped
-2020-11-05 11:28:35,573 DEBUG services ['ping'] stopped
-2020-11-05 11:28:35,573 DEBUG killing services ['ping']
-2020-11-05 11:28:35,574 DEBUG service ping already stopped
-2020-11-05 11:28:35,574 DEBUG services ['ping'] killed
+2020-11-05 17:24:06,141 DEBUG load container class from namekox_core.core.service.container:ServiceContainer
+2020-11-05 17:24:06,142 DEBUG starting services ['phone']
+2020-11-05 17:24:06,142 DEBUG starting service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number]
+2020-11-05 17:24:06,142 DEBUG spawn manage thread handle phone:namekox_timer.core.entrypoints.timer:_run(args=(), kwargs={}, tid=_run)
+2020-11-05 17:24:06,143 DEBUG service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number] started
+2020-11-05 17:24:06,143 DEBUG starting service phone dependencies [phone:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
+2020-11-05 17:24:06,143 DEBUG service phone dependencies [phone:namekox_redis.core.dependencies.redisdb.RedisDB:redis] started
+2020-11-05 17:24:06,143 DEBUG services ['phone'] started
+2020-11-05 17:24:06,246 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:11,163 DEBUG number_assign waiting `phone:assign_number:lock` lock released
+2020-11-05 17:24:16,088 DEBUG number_assign waiting `phone:assign_number:lock` lock released
+2020-11-05 17:24:20,737 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:21,742 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:21,742 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:21,745 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:26,750 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:26,750 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:26,753 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:31,760 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:31,761 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:31,765 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:35,772 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:35,772 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:35,775 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:39,781 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:39,781 DEBUG spawn worker thread handle phone:assign_number(args=(), kwargs={}, context=None)
+2020-11-05 17:24:39,786 DEBUG number_assign acquire `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+^C2020-11-05 17:24:44,484 DEBUG stopping services ['phone']
+2020-11-05 17:24:44,485 DEBUG stopping service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number]
+2020-11-05 17:24:44,790 DEBUG number_assign release `phone:assign_number:lock` lock({'blocking_timeout': 5, 'timeout': 20}) succ
+2020-11-05 17:24:44,790 DEBUG wait service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number] stop
+2020-11-05 17:24:44,791 DEBUG service phone entrypoints [phone:namekox_timer.core.entrypoints.timer.Timer:assign_number] stopped
+2020-11-05 17:24:44,791 DEBUG stopping service phone dependencies [phone:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
+2020-11-05 17:24:44,791 DEBUG service phone dependencies [phone:namekox_redis.core.dependencies.redisdb.RedisDB:redis] stopped
+2020-11-05 17:24:44,791 DEBUG services ['phone'] stopped
+2020-11-05 17:24:44,792 DEBUG killing services ['phone']
+2020-11-05 17:24:44,792 DEBUG service phone already stopped
+2020-11-05 17:24:44,793 DEBUG services ['phone'] killed
 ```
 
 # Debug
