@@ -3,17 +3,15 @@
 # author: forcemain@163.com
 
 
+from namekox_redis.core.client import RedisClient
 from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
 from namekox_core.core.service.dependency import Dependency
 
 
-from .client import RedisClient
-
-
 class RedisDB(Dependency):
     def __init__(self, dbname, **options):
-        self.connection = None
+        self.client = None
         self.dbname = dbname
         self.options = options
         super(RedisDB, self).__init__(dbname, *options)
@@ -24,11 +22,11 @@ class RedisDB(Dependency):
 
     def setup(self):
         duri = self.uris[self.dbname]
-        self.connection = RedisClient.from_url(duri, *self.options)
+        self.client = RedisClient.from_url(duri, *self.options)
 
     def get_instance(self, context):
-        return self.connection
+        return self.client(context)
 
     def stop(self):
-        self.connection and self.connection.close()
-        self.connection.connection_pool and self.connection.connection_pool.disconnect()
+        self.client and self.client.close()
+        self.client.connection_pool and self.client.connection_pool.disconnect()

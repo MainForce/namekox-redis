@@ -32,4 +32,4 @@ class SentinelDB(Dependency):
             c.connection_pool and c.connection_pool.disconnect()
 
     def get_instance(self, context):
-        return self.sentinel
+        return self.sentinel(context)
