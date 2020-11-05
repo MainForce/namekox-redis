@@ -77,62 +77,55 @@ REDIS:
 ```
 > namekox run ping
 ```shell script
-2020-11-05 17:20:29,046 DEBUG load container class from namekox_core.core.service.container:ServiceContainer
-2020-11-05 17:20:29,047 DEBUG starting services ['ping']
-2020-11-05 17:20:29,047 DEBUG starting service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res]
-2020-11-05 17:20:29,048 DEBUG spawn manage thread handle ping:namekox_timer.core.entrypoints.timer:_run(args=(), kwargs={}, tid=_run)
-2020-11-05 17:20:29,048 DEBUG spawn manage thread handle ping:namekox_redis.core.entrypoints.sub.handler:_run(args=(), kwargs={}, tid=_run)
-2020-11-05 17:20:29,051 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_connect(args=(), kwargs={}, tid=handle_connect)
-2020-11-05 17:20:29,052 DEBUG service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] started
-2020-11-05 17:20:29,052 DEBUG starting service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
-2020-11-05 17:20:29,055 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] started
-2020-11-05 17:20:29,056 DEBUG services ['ping'] started
-2020-11-05 17:20:34,054 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 17:20:34,065 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:248.5.143.151:result": {"1604568034054": 0}}}',), kwargs={}, context={})
-('recv ping channel data: ', '{"headers": {}, "message": {"ping:248.5.143.151:result": {"1604568034054": 0}}}')
-2020-11-05 17:20:39,056 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 17:20:39,063 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:1.45.148.128:result": {"1604568039057": 0}}}',), kwargs={}, context={})
-('recv ping channel data: ', '{"headers": {}, "message": {"ping:1.45.148.128:result": {"1604568039057": 0}}}')
-2020-11-05 17:20:44,055 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 17:20:44,061 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:238.118.45.63:result": {"1604568044055": 0}}}',), kwargs={}, context={})
-('recv ping channel data: ', '{"headers": {}, "message": {"ping:238.118.45.63:result": {"1604568044055": 0}}}')
-2020-11-05 17:20:49,056 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 17:20:49,059 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:103.141.211.213:result": {"1604568049056": 1}}}',), kwargs={}, context={})
-('recv ping channel data: ', '{"headers": {}, "message": {"ping:103.141.211.213:result": {"1604568049056": 1}}}')
-2020-11-05 17:20:52,911 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_request(args=(<eventlet.greenio.base.GreenSocket object at 0x111334f50>, ('127.0.0.1', 50627)), kwargs={}, tid=handle_request)
-2020-11-05 17:20:54,057 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 17:20:54,060 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:132.41.210.189:result": {"1604568054057": 1}}}',), kwargs={}, context={})
-('recv ping channel data: ', '{"headers": {}, "message": {"ping:132.41.210.189:result": {"1604568054057": 1}}}')
-2020-11-05 17:20:59,056 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 17:20:59,060 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:184.173.13.42:result": {"1604568059056": 0}}}',), kwargs={}, context={})
-('recv ping channel data: ', '{"headers": {}, "message": {"ping:184.173.13.42:result": {"1604568059056": 0}}}')
-2020-11-05 17:21:00,897 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_request(args=(<eventlet.greenio.base.GreenSocket object at 0x111334d50>, ('127.0.0.1', 50649)), kwargs={}, tid=handle_request)
-2020-11-05 17:21:00,969 DEBUG spawn worker thread handle ping:ping_res(args=(<Request 'http://127.0.0.1/api/ping/248.5.143.151/' [GET]>,), kwargs={'ip': u'248.5.143.151'}, context={})
-127.0.0.1 - - [05/Nov/2020 17:21:00] "GET /api/ping/248.5.143.151/ HTTP/1.1" 200 302 0.014956
-2020-11-05 17:21:04,051 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
-2020-11-05 17:21:04,054 DEBUG spawn worker thread handle ping:rds_sub(args=('{"headers": {}, "message": {"ping:250.191.226.59:result": {"1604568064052": 0}}}',), kwargs={}, context={})
-('recv ping channel data: ', '{"headers": {}, "message": {"ping:250.191.226.59:result": {"1604568064052": 0}}}')
-^C2020-11-05 17:21:08,036 DEBUG stopping services ['ping']
-2020-11-05 17:21:08,036 DEBUG stopping service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res]
-2020-11-05 17:21:08,038 DEBUG wait service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] stop
-2020-11-05 17:21:08,039 DEBUG service ping entrypoints [ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] stopped
-2020-11-05 17:21:08,039 DEBUG stopping service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
-2020-11-05 17:21:08,041 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] stopped
-2020-11-05 17:21:08,044 DEBUG services ['ping'] stopped
-2020-11-05 17:21:08,045 DEBUG killing services ['ping']
-2020-11-05 17:21:08,046 DEBUG service ping already stopped
-2020-11-05 17:21:08,047 DEBUG services ['ping'] killed
+2020-11-05 18:04:55,207 DEBUG load container class from namekox_core.core.service.container:ServiceContainer
+2020-11-05 18:04:55,209 DEBUG starting services ['ping']
+2020-11-05 18:04:55,209 DEBUG starting service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res]
+2020-11-05 18:04:55,211 DEBUG spawn manage thread handle ping:namekox_redis.core.entrypoints.sub.handler:_run(args=(), kwargs={}, tid=_run)
+2020-11-05 18:04:55,211 DEBUG spawn manage thread handle ping:namekox_timer.core.entrypoints.timer:_run(args=(), kwargs={}, tid=_run)
+2020-11-05 18:04:55,213 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_connect(args=(), kwargs={}, tid=handle_connect)
+2020-11-05 18:04:55,214 DEBUG service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] started
+2020-11-05 18:04:55,215 DEBUG starting service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
+2020-11-05 18:04:55,216 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] started
+2020-11-05 18:04:55,217 DEBUG services ['ping'] started
+2020-11-05 18:05:00,219 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 18:05:00,226 DEBUG spawn worker thread handle ping:rds_sub(args=({u'ping:42.194.112.46:result': {u'1604570700219': 0}},), kwargs={}, context={})
+('recv ping channel data: ', {u'ping:42.194.112.46:result': {u'1604570700219': 0}})
+2020-11-05 18:05:05,219 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 18:05:05,222 DEBUG spawn worker thread handle ping:rds_sub(args=({u'ping:164.102.231.171:result': {u'1604570705219': 1}},), kwargs={}, context={})
+('recv ping channel data: ', {u'ping:164.102.231.171:result': {u'1604570705219': 1}})
+2020-11-05 18:05:10,219 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 18:05:10,222 DEBUG spawn worker thread handle ping:rds_sub(args=({u'ping:188.106.56.55:result': {u'1604570710219': 1}},), kwargs={}, context={})
+('recv ping channel data: ', {u'ping:188.106.56.55:result': {u'1604570710219': 1}})
+2020-11-05 18:05:12,931 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_request(args=(<eventlet.greenio.base.GreenSocket object at 0x104d44d50>, ('127.0.0.1', 57316)), kwargs={}, tid=handle_request)
+2020-11-05 18:05:15,219 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 18:05:15,222 DEBUG spawn worker thread handle ping:rds_sub(args=({u'ping:148.208.79.87:result': {u'1604570715219': 1}},), kwargs={}, context={})
+('recv ping channel data: ', {u'ping:148.208.79.87:result': {u'1604570715219': 1}})
+2020-11-05 18:05:17,882 DEBUG spawn worker thread handle ping:ping_res(args=(<Request 'http://127.0.0.1/api/ping/42.194.112.46/' [GET]>,), kwargs={'ip': u'42.194.112.46'}, context={})
+127.0.0.1 - - [05/Nov/2020 18:05:17] "GET /api/ping/42.194.112.46/ HTTP/1.1" 200 302 0.009732
+2020-11-05 18:05:20,219 DEBUG spawn worker thread handle ping:ip_ping(args=(), kwargs={}, context=None)
+2020-11-05 18:05:20,223 DEBUG spawn worker thread handle ping:rds_sub(args=({u'ping:115.179.48.157:result': {u'1604570720220': 0}},), kwargs={}, context={})
+('recv ping channel data: ', {u'ping:115.179.48.157:result': {u'1604570720220': 0}})
+^C2020-11-05 18:05:21,867 DEBUG stopping services ['ping']
+2020-11-05 18:05:21,868 DEBUG stopping service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res]
+2020-11-05 18:05:21,873 DEBUG wait service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] stop
+2020-11-05 18:05:21,874 DEBUG service ping entrypoints [ping:namekox_redis.core.entrypoints.sub.handler.RedisSubHandler:rds_sub, ping:namekox_timer.core.entrypoints.timer.Timer:ip_ping, ping:namekox_webserver.core.entrypoints.app.server.WebServer:server, ping:namekox_webserver.core.entrypoints.app.handler.ApiServerHandler:ping_res] stopped
+2020-11-05 18:05:21,876 DEBUG stopping service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis]
+2020-11-05 18:05:21,878 DEBUG service ping dependencies [ping:namekox_redis.core.dependencies.redisdb.RedisDB:redis] stopped
+2020-11-05 18:05:21,879 DEBUG services ['ping'] stopped
+2020-11-05 18:05:21,879 DEBUG killing services ['ping']
+2020-11-05 18:05:21,879 DEBUG service ping already stopped
+2020-11-05 18:05:21,880 DEBUG services ['ping'] killed
 ```
-> curl http://127.0.0.1/api/ping/248.5.143.151/
+> curl http://127.0.0.1/api/ping/42.194.112.46/
 ```json
 {
     "errs": "",
     "code": "Request:Success",
     "data": [
         {
-          "ip": "248.5.143.151",
+          "ip": "42.194.112.46",
           "alive": false,
-          "created": 1604568034054
+          "created": 1604570700219
         }
     ],
     "call_id": "bb3a562d-44ed-4b7f-ad77-7978403fd4b9"

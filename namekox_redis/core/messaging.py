@@ -18,7 +18,7 @@ def gen_message_headers(context):
 
 
 def get_message_headers(message):
-    message_headers = message['data'].get('headers', {}) if isinstance(message['data'], dict) else {}
+    message_headers = message.get('headers', {}) if isinstance(message, dict) else {}
     headers = {}
     for k, v in six.iteritems(message_headers):
         p = '{}-'.format(DEFAULT_REDIS_H_PREFIX)

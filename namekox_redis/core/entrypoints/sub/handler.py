@@ -4,6 +4,7 @@
 
 
 import time
+import json
 
 
 from redis import StrictRedis
@@ -46,10 +47,16 @@ class RedisSubHandler(Entrypoint):
         s = p.psubscribe if self.pattern_mode is True else p.subscribe
         s(*self.channels)
         for m in p.listen():
-            d = m['data']
-            args, kwargs = (d,), {}
-            ctx_data = get_message_headers(m)
+            try:
+                d = json.loads(m['data'])
+                if isinstance(d, dict) and 'message' in d:
+                    args, kwargs = (d['message'],), {}
+                else:
+                    args, kwargs = (d,), {}
+            except (TypeError, ValueError):
+                d = m['data']
+                args, kwargs = (d,), {}
+            ctx_data = get_message_headers(d)
             self.container.spawn_worker_thread(self, args, kwargs, ctx_data=ctx_data)
-            time.sleep(0.001)
         u = p.punsubscribe if self.pattern_mode is True else p.unsubscribe
         u(*self.channels)
