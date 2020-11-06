@@ -3,7 +3,6 @@
 # author: forcemain@163.com
 
 
-import time
 import json
 
 
@@ -47,6 +46,8 @@ class RedisSubHandler(Entrypoint):
         s = p.psubscribe if self.pattern_mode is True else p.subscribe
         s(*self.channels)
         for m in p.listen():
+            msg = '{} receive {}'.format(self.obj_name, m)
+            logger.debug(msg)
             try:
                 d = json.loads(m['data'])
                 if isinstance(d, dict) and 'message' in d:
