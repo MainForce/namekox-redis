@@ -16,7 +16,7 @@ class RedisClient(StrictRedis):
         super(RedisClient, self).__init__(*args, **kwargs)
 
     def publish(self, channel, message):
-        headers = gen_message_headers(self.context.context) if self.context else {}
+        headers = gen_message_headers(self.context.data)
         resdata = {'headers': headers, 'message': message}
         return super(RedisClient, self).publish(channel, json.dumps(resdata))
 
