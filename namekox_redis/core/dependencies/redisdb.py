@@ -30,5 +30,4 @@ class RedisDB(Dependency):
         return self.client(context)
 
     def stop(self):
-        self.client and self.client.close()
-        self.client.connection_pool and self.client.connection_pool.disconnect()
+        self.client and self.client.connection_pool and self.client.connection_pool.disconnect()
