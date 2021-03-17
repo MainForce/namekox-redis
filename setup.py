@@ -16,14 +16,14 @@ readme = open(os.path.join(curdir, 'READIT.md'), 'rb', 'utf-8').read()
 
 setup(
     name='namekox-redis',
-    version='0.0.14',
+    version='0.0.15',
     description='namekox redis',
     long_description_content_type='text/markdown',
     long_description=readme,
     author='forcemain',
     url='https://forcemain.github.io/',
     packages=find_packages(exclude=['test', 'test.*']),
-    install_requires=["namekox-core", "redis==3.5.3"],
+    install_requires=["namekox-core", "redis==3.5.3", "anyjson==0.3.3"],
     zip_safe=True,
     license='Apache License, Version 2.0',
     classifiers=[

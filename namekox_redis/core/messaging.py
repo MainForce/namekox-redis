@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 
 
 import six
+import anyjson
 
 
 from namekox_redis.constants import DEFAULT_REDIS_H_PREFIX
@@ -24,5 +25,8 @@ def get_message_headers(message):
     headers = {}
     for k, v in six.iteritems(message_headers):
         p = '{}-'.format(DEFAULT_REDIS_H_PREFIX)
-        k.startswith(p) and headers.update({k[len(p):]: v})
+        if not k.lower().startswith(p):
+            continue
+        k = k.lower()[len(p):].replace('-', '_')
+        headers.update({k: anyjson.deserialize(v)})
     return headers
