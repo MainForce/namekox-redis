@@ -16,7 +16,7 @@ def gen_message_headers(context):
     headers = {}
     for k, v in six.iteritems(context):
         k = '{}-'.format(DEFAULT_REDIS_H_PREFIX) + k
-        headers.update({k: v})
+        headers.update({k: anyjson.serialize(v)})
     return headers
 
 
