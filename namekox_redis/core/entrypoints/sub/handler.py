@@ -48,7 +48,7 @@ class RedisSubHandler(Entrypoint):
         for m in p.listen():
             msg = '{} receive {}'.format(self.obj_name, m)
             logger.debug(msg)
-            args, kwargs = (json.loads(s),), {}
+            args, kwargs = (m,), {}
             self.container.spawn_worker_thread(self, args, kwargs)
         u = p.punsubscribe if self.pattern_mode is True else p.unsubscribe
         u(*self.channels)
