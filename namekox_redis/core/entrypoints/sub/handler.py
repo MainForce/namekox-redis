@@ -12,7 +12,6 @@ from logging import getLogger
 from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
 from namekox_core.core.service.entrypoint import Entrypoint
-from namekox_redis.core.messaging import get_message_headers
 
 
 logger = getLogger(__name__)
@@ -49,16 +48,7 @@ class RedisSubHandler(Entrypoint):
         for m in p.listen():
             msg = '{} receive {}'.format(self.obj_name, m)
             logger.debug(msg)
-            try:
-                d = json.loads(m['data'])
-                if isinstance(d, dict) and 'message' in d:
-                    args, kwargs = (d['message'],), {}
-                else:
-                    args, kwargs = (d,), {}
-            except (TypeError, ValueError):
-                d = m['data']
-                args, kwargs = (d,), {}
-            ctx_data = get_message_headers(d)
-            self.container.spawn_worker_thread(self, args, kwargs, ctx_data=ctx_data)
+            args, kwargs = (json.loads(s),), {}
+            self.container.spawn_worker_thread(self, args, kwargs)
         u = p.punsubscribe if self.pattern_mode is True else p.unsubscribe
         u(*self.channels)

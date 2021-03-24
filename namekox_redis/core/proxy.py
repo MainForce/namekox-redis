@@ -5,12 +5,12 @@
 from __future__ import unicode_literals
 
 
-from redis import StrictRedis
 from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
 
 
 from .sentinel import Sentinel
+from .client import StrictRedis
 
 
 class RedisDBProxy(object):
