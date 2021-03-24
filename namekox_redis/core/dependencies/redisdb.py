@@ -5,7 +5,7 @@
 from __future__ import unicode_literals
 
 
-from namekox_redis.core.client import RedisClient
+from redis import StrictRedis
 from namekox_redis.constants import REDIS_CONFIG_KEY
 from namekox_core.core.friendly import AsLazyProperty
 from namekox_core.core.service.dependency import Dependency
@@ -24,10 +24,10 @@ class RedisDB(Dependency):
 
     def setup(self):
         duri = self.uris[self.dbname]
-        self.client = RedisClient.from_url(duri, *self.options)
-
-    def get_instance(self, context):
-        return self.client(context)
+        self.client = StrictRedis.from_url(duri, *self.options)
 
     def stop(self):
         self.client and self.client.connection_pool and self.client.connection_pool.disconnect()
+
+    def get_instance(self, context):
+        return self.client
